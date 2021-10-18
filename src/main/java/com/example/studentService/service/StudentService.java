@@ -4,8 +4,8 @@ import com.example.studentService.VO.Faculty;
 import com.example.studentService.VO.StudentVO;
 import com.example.studentService.entity.Student;
 import com.example.studentService.repo.StudentRepository;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,7 @@ public class StudentService{
         return studentRepository.save(student);
     }
 
+    @Retry(name = "basic")
     public StudentVO findStudentByIdWithFaculty(Integer id){
         log.info("find student by id : " + id + " with faculty");
         StudentVO studentVO = null;
