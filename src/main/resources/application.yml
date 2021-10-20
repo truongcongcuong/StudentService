@@ -4,3 +4,23 @@ resilience4j:
       basic:
         maxRetryAttemps: 5
         waitDuration: 3s
+
+      throwingException:
+        maxRetryAttemps: 3
+        waitDuration: 2s
+        retryExceptions:
+          - java.lang.Exception
+
+      exponential:
+        maxRetryAttemps: 3
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+
+      random:
+        maxRetryAttemps: 3
+        waitDuration: 2s
+        enableRandomizedWait: true
+        randomizedWaitFactor: 0.5
+
+

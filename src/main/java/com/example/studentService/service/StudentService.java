@@ -29,15 +29,54 @@ public class StudentService{
         return studentRepository.save(student);
     }
 
-    @Retry(name = "basic")
+    @Retry(name = "basic" , fallbackMethod = "fallbackMethodStudentFaculty")
     public StudentVO findStudentByIdWithFaculty(Integer id){
         log.info("find student by id : " + id + " with faculty");
+        return findStudentFacultyMethod(id);
+    }
+
+
+    @Retry(name = "throwingException")
+    public StudentVO findStudentByIdWithFacultyThrowExeption(){
+        StudentVO studentVO = null;
+        Student student = null;
+        Faculty faculty = restTemplate.getForObject(url+"exception",Faculty.class);
+        studentVO = new StudentVO(student,faculty);
+        return studentVO;
+
+    }
+
+    @Retry(name = "exponential")
+    public StudentVO findStudentByIdWithFacultyExponential(Integer id){
+        log.info("find student faculty exponential");
+        return findStudentFacultyMethod(id);
+    }
+
+    @Retry(name = "random")
+    public StudentVO findStudentByIdWithFacultyRandom(Integer id){
+        log.info("find student faculty exponential");
+        return findStudentFacultyMethod(id);
+    }
+
+    public StudentVO fallbackMethodStudentFaculty(RuntimeException runtimeException){
+
+        log.info("fallback method");
+        StudentVO studentVO = StudentVO.builder().
+                student(new Student(9999,"fallback Method","9999",9999))
+                .faculty(new Faculty(9999,"fallback Method"))
+                .build();
+        return studentVO;
+    }
+
+
+
+
+    public StudentVO findStudentFacultyMethod(int id){
         StudentVO studentVO = null;
         Student student = studentRepository.findById(id).get();
         Faculty faculty = restTemplate.getForObject(url+student.getFacultyId(),Faculty.class);
         studentVO = new StudentVO(student,faculty);
         return studentVO;
-
     }
 
 }

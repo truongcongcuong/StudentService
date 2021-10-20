@@ -34,6 +34,27 @@ public class StudentController {
         return studentService.findStudentByIdWithFaculty(id);
     }
 
+    @GetMapping("/exception")
+    public StudentVO getStudentWithFacultyThrowingException(){
+        log.info("student controller - get student with faculty");
+        return studentService.findStudentByIdWithFacultyThrowExeption();
+    }
+
+    @GetMapping("/exponential/{id}")
+    public StudentVO getStudentWithFacultyExponential(@PathVariable("id") Integer id){
+        log.info("student controller - get student with faculty");
+        return studentService.findStudentByIdWithFacultyExponential(id);
+    }
+
+    @GetMapping("/random/{id}")
+    public StudentVO getStudentWithFacultyRandom(@PathVariable("id") Integer id){
+        log.info("student controller - get student with faculty");
+        return studentService.findStudentByIdWithFacultyRandom(id);
+    }
+
+
+
+
 
     @GetMapping("/")
     public String hello(){
